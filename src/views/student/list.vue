@@ -11,7 +11,7 @@
           :trigger-on-focus="false"
           class="inline-input"
           placeholder="学生名称"
-          value-key="name" />
+          value-key="stu_name" />
       </el-form-item>
 
       <el-form-item>
@@ -46,7 +46,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="stuNumber" label="学号" />
-      <el-table-column prop="stuClass" label="班级" />
+      <el-table-column prop="className" label="班级" />
       <el-table-column prop="stuEmail" label="邮箱" />
       <el-table-column prop="stuState" label="状态">
         <template slot-scope="scope">

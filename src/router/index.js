@@ -180,7 +180,8 @@ export const constantRouterMap = [
         path: 'create',
         name: 'InternshipCreate',
         component: () => import('@/views/internship/form'),
-        meta: { title: '添加实习记录' }
+        meta: { title: '添加实习记录'
+        }
       },
       {
         path: 'edit/:id',
@@ -223,6 +224,7 @@ router.beforeEach((to, form, next) => {
   // if (to.name === 'TeacherList') {
   //   next({ name: 'NotMatch' })
   // }
+
   next()
 })
 
