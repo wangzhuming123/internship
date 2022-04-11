@@ -23,8 +23,8 @@
           <svg-icon icon-class="eye" />
         </span>
       </el-form-item>
-      <el-form-item label="用户类型" prop="region" align = "right" >
-        <el-select v-model="ruleForm.region" placeholder="请选用户类型">
+      <el-form-item label="用户类型" prop="type" align = "right" >
+        <el-select v-model="loginForm.type" name="type" placeholder="请选用户类型">
           <el-option label="管理员" value="0"/>
           <el-option label="辅导员" value="1"/>
           <el-option label="学生" value="2"/>
@@ -54,6 +54,7 @@
 <script>
 import { isvalidUsername } from '@/utils/validate'
 import left from './left.vue'
+
 export default {
   name: 'Login',
   components: { left },
@@ -75,7 +76,8 @@ export default {
     return {
       loginForm: {
         username: 'admin',
-        password: 'admin'
+        password: 'admin',
+        type: ''
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -83,17 +85,7 @@ export default {
       },
       loading: false,
       pwdType: 'password',
-      redirect: undefined,
-      ruleForm: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
-      }
+      redirect: undefined
     }
   },
   watch: {
@@ -115,7 +107,6 @@ export default {
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          console.log('region:', this.ruleForm.region)
           this.loading = true
           this.$store.dispatch('Login', this.loginForm).then(() => {
             this.loading = false

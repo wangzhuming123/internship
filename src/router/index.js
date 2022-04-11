@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import { getToken } from '@/utils/auth'
 
 // in development-env not use lazy-loading, because lazy-loading too many pages will cause webpack hot update too slow. so only in production use lazy-loading;
 // detail: https://panjiachen.github.io/vue-element-admin-site/#/lazy-loading
@@ -21,10 +22,10 @@ import Layout from '../views/layout/Layout'
     icon: 'svg-name'             the icon show in the sidebar,
   }
 **/
+
 export const constantRouterMap = [
   { path: '/login', component: () => import('@/views/login/index'), hidden: true },
   { path: '/404', component: () => import('@/views/404'), hidden: true },
-
   {
     path: '/',
     component: Layout,
@@ -35,15 +36,17 @@ export const constantRouterMap = [
       path: 'dashboard',
       component: () => import('@/views/dashboard/index')
     }]
-  },
 
+  }]
+export const asyncRouterMap = [
+  { path: '/404', component: () => import('@/views/404'), hidden: true },
   // 辅导员管理
   {
     path: '/teacher',
     component: Layout,
     redirect: '/teacher/list',
     name: 'Teacher',
-    meta: { title: '辅导员管理' },
+    meta: { title: '辅导员管理', role: ['admin', 'teacher'] },
     children: [
       {
         path: 'list',
@@ -73,7 +76,7 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/student/list',
     name: 'Student',
-    meta: { title: '学生管理' },
+    meta: { title: '学生管理', role: ['admin', 'teacher'] },
     children: [
       {
         path: 'list',
@@ -108,7 +111,7 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/class/list',
     name: 'Class',
-    meta: { title: '班级管理' },
+    meta: { title: '班级管理', role: ['admin', 'teacher'] },
     children: [
       {
         path: 'list',
@@ -138,7 +141,7 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/company/list',
     name: 'Company',
-    meta: { title: '公司管理' },
+    meta: { title: '公司管理', role: ['admin'] },
     children: [
       {
         path: 'list',
@@ -168,7 +171,7 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/internship/list',
     name: 'Internship',
-    meta: { title: '实习记录管理' },
+    meta: { title: '实习记录管理', role: ['admin'] },
     children: [
       {
         path: 'list',
@@ -212,6 +215,7 @@ export const constantRouterMap = [
   { path: '*', redirect: '/404', name: 'NotMatch', hidden: true }
 ]
 
+console.log('token:', getToken())
 const router = new Router({
   // mode: 'history', //后端支持可开
   scrollBehavior: () => ({ y: 0 }),
@@ -224,8 +228,11 @@ router.beforeEach((to, form, next) => {
   // if (to.name === 'TeacherList') {
   //   next({ name: 'NotMatch' })
   // }
-
-  next()
 })
+
+export function resetRouter() {
+  const newRouter = router
+  router.matcher = newRouter.matcher // 重置路由
+}
 
 export default router
