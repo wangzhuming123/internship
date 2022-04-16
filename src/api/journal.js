@@ -31,22 +31,31 @@ export default{
   },
   save(myjournal) {
     return request({
-      url: '/admin/manage/journal/save',
+      url: '/student/manage/addJournal',
       method: 'post',
       data: myjournal
 
     })
   },
+  // 根据学生id查询周记
   getById(id) {
     return request({
-      url: `/admin/manage/journal/get/${id}`,
+      url: `/student/manage/journal/get/${id}`,
       method: 'get'
 
     })
   },
+  // 根据周记id查询周记
+  getByJouId(id) {
+    return request({
+      url: `manage/journal/get/${id}`,
+      method: 'get'
+    })
+  },
+  // 更新周记
   updateById(myjournal) {
     return request({
-      url: `/admin/manage/journal/update`,
+      url: `manage/journal/update`,
       method: 'put',
       data: myjournal
 

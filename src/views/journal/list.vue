@@ -1,24 +1,6 @@
 <template>
   <div journal="app-container">
 
-    <!--查询表单-->
-    <el-form :inline="true">
-      <el-form-item>
-
-        <el-autocomplete
-          v-model="searchObj.journalName"
-          :fetch-suggestions="querySearch"
-          :trigger-on-focus="false"
-          journal="inline-input"
-          placeholder="班级名称"
-          value-key="journal_name" />
-      </el-form-item>
-
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" @click="fetchData()">查询</el-button>
-        <el-button type="default" @click="resetData()">清空</el-button>
-      </el-form-item>
-    </el-form>
     <!-- 多选删除 -->
     <div style="margin-bottom: 10px">
       <el-button type="danger" size="mini" @click="batchRemove()">批量删除</el-button>
@@ -38,18 +20,16 @@
           {{ (page - 1) * limit + scope.$index + 1 }}
         </template>
       </el-table-column>
-      <el-table-column prop="journalName" label="班级名称" width="180"/>
-      <el-table-column prop="journalNumber" label="班级人数" width="180"/>
-      <el-table-column prop="journalLeader" label="辅导员" width="180"/>
+      <el-table-column prop="jourContent" label="周记内容" width="180"/>
       <el-table-column label="操作" width="200">
         <template slot-scope="scope">
-          <router-link :to="'/journal/edit/'+scope.row.journalId">
+          <router-link :to="'/journal/edit/'+scope.row.jourId">
             <el-button type="primary" size="mini" icon="el-icon-edit">修改</el-button>
           </router-link>
           <el-button
             size="mini"
             type="danger"
-            @click="removeById(scope.row.journalId)">删除</el-button>
+            @click="removeById(scope.row.jourId)">删除</el-button>
         </template>
 
       </el-table-column>
@@ -87,9 +67,10 @@ export default {
   },
 
   methods: {
-    // 调用api模块，加载辅导员列表
+    // 调用api模块，加载当前学生的周记
     fetchData() {
-      journalApi.pageList(this.page, this.limit, this.searchObj).then(response => {
+      const stuId = sessionStorage.getItem('stuId')
+      journalApi.getById(stuId).then(response => {
         this.list = response.data.rows
         this.total = response.data.total
       })

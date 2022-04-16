@@ -132,14 +132,26 @@ export default {
   methods: {
     // 调用api模块，加载实习记录列表
     fetchData() {
-      internshipApi.pageList(this.page, this.limit, this.searchObj).then(response => {
-        this.list = response.data.rows
-        this.list.forEach((element, index) => {
-          this.list[index].interEndTime = element.interEndTime.slice(0, 10)
+      const stuId = sessionStorage.getItem('stuId')
+      if (stuId) {
+        internshipApi.getByStuId(stuId).then(response => {
+          this.list = response.data.rows
+          this.list.forEach((element, index) => {
+            this.list[index].interEndTime = element.interEndTime.slice(0, 10)
           // this.list[index].interStartTime = element.interStartTime.slice(0, 10)
+          })
+          this.total = response.data.total
         })
-        this.total = response.data.total
-      })
+      } else {
+        internshipApi.pageList(this.page, this.limit, this.searchObj).then(response => {
+          this.list = response.data.rows
+          this.list.forEach((element, index) => {
+            this.list[index].interEndTime = element.interEndTime.slice(0, 10)
+          // this.list[index].interStartTime = element.interStartTime.slice(0, 10)
+          })
+          this.total = response.data.total
+        })
+      }
     },
     // 跳转页数
     changeCurrentPage(page) {

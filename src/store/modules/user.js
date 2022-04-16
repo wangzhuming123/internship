@@ -1,5 +1,8 @@
 import { login, logout, getInfo } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
+// import router, { constantRouterMap } from '@/router'
+
+// import roleobj from '@/utils/role'
 
 const user = {
   state: {
@@ -32,10 +35,15 @@ const user = {
         login(username, userInfo.password, userInfo.type).then(response => {
           const data = response.data
           setToken(data.token)
+          console.log(data)
+          Object.keys(data).forEach(item => {
+            sessionStorage.setItem(item, typeof data[item] === 'object' ? JSON.stringify(data[item]) : data[item])
+          })
           commit('SET_TOKEN', data.token)
-          resolve()
+          sessionStorage.setItem('role', data.token)
+          resolve(data.token)
         }).catch(error => {
-          console.log('error')
+          console.log('error', error)
           reject(error)
         })
       })
@@ -46,6 +54,7 @@ const user = {
       return new Promise((resolve, reject) => {
         getInfo(state.token).then(response => {
           const data = response.data
+          console.log('____', data)
           if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
             commit('SET_ROLES', data.roles)
           } else {
@@ -67,6 +76,8 @@ const user = {
           commit('SET_TOKEN', '')
           commit('SET_ROLES', [])
           removeToken()
+          // router.options.routes = constantRouterMap
+          sessionStorage.removeItem('role')
           resolve()
         }).catch(error => {
           reject(error)

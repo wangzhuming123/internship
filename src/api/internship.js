@@ -37,9 +37,10 @@ export default{
 
     })
   },
-  getById(id) {
+  // 根据学生id查询实习记录
+  getByStuId(id) {
     return request({
-      url: `/admin/manage/internship/get/${id}`,
+      url: `/admin/manage/internship/getByStu/${id}`,
       method: 'get'
 
     })

@@ -26,6 +26,8 @@ import Layout from '../views/layout/Layout'
 export const constantRouterMap = [
   { path: '/login', component: () => import('@/views/login/index'), hidden: true },
   { path: '/404', component: () => import('@/views/404'), hidden: true },
+  { path: '/stuPort', component: () => import('@/views/stuPort'), hidden: true },
+  { path: '/parPort', component: () => import('@/views/parPort'), hidden: true },
   {
     path: '/',
     component: Layout,
@@ -39,14 +41,13 @@ export const constantRouterMap = [
 
   }]
 export const asyncRouterMap = [
-  { path: '/404', component: () => import('@/views/404'), hidden: true },
   // 辅导员管理
   {
     path: '/teacher',
     component: Layout,
     redirect: '/teacher/list',
     name: 'Teacher',
-    meta: { title: '辅导员管理', role: ['admin', 'teacher'] },
+    meta: { title: '辅导员管理', roles: ['0'] },
     children: [
       {
         path: 'list',
@@ -76,7 +77,7 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/student/list',
     name: 'Student',
-    meta: { title: '学生管理', role: ['admin', 'teacher'] },
+    meta: { title: '学生管理', roles: ['0', '1'] },
     children: [
       {
         path: 'list',
@@ -111,7 +112,7 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/class/list',
     name: 'Class',
-    meta: { title: '班级管理', role: ['admin', 'teacher'] },
+    meta: { title: '班级管理', roles: ['0', '1'] },
     children: [
       {
         path: 'list',
@@ -141,7 +142,7 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/company/list',
     name: 'Company',
-    meta: { title: '公司管理', role: ['admin'] },
+    meta: { title: '公司管理', roles: ['0'] },
     children: [
       {
         path: 'list',
@@ -171,7 +172,7 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/internship/list',
     name: 'Internship',
-    meta: { title: '实习记录管理', role: ['admin'] },
+    meta: { title: '实习记录管理' },
     children: [
       {
         path: 'list',
@@ -195,9 +196,38 @@ export const asyncRouterMap = [
       }
     ]
   },
-  // 周报管理
+  // 周报管理  根据学生id查询周报
+  {
+    path: '/journal',
+    component: Layout,
+    redirect: '/journal/list',
+    name: 'Journal',
+    meta: { title: '周报管理' },
+    children: [
+      {
+        path: 'list',
+        name: 'JournalList',
+        component: () => import('@/views/journal/list'),
+        meta: { title: '周报列表' }
+      },
+      {
+        path: 'create',
+        name: 'JournalCreate',
+        component: () => import('@/views/journal/form'),
+        meta: { title: '添加周记'
+        }
+      },
+      {
+        path: 'edit/:id',
+        name: 'JournalEdit',
+        component: () => import('@/views/journal/form'),
+        meta: { title: '编辑周记' },
+        hidden: true
+      }
+    ]
+  },
   // {
-  //   path: '/journal',
+  //   path: '/myinternship',
   //   component: Layout,
   //   redirect: '/journal/list',
   //   name: 'Journal',
@@ -219,17 +249,9 @@ console.log('token:', getToken())
 const router = new Router({
   // mode: 'history', //后端支持可开
   scrollBehavior: () => ({ y: 0 }),
-  routes: constantRouterMap
+  routes: [...constantRouterMap]
 })
-
-// 权限控制
-router.beforeEach((to, form, next) => {
-  // console.log(to, form)
-  // if (to.name === 'TeacherList') {
-  //   next({ name: 'NotMatch' })
-  // }
-})
-
+// console.log('token:', sessionStorage.getItem('rolelist'))
 export function resetRouter() {
   const newRouter = router
   router.matcher = newRouter.matcher // 重置路由
