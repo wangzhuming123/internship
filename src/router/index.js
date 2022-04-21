@@ -184,7 +184,7 @@ export const asyncRouterMap = [
         path: 'create',
         name: 'InternshipCreate',
         component: () => import('@/views/internship/form'),
-        meta: { title: '添加实习记录'
+        meta: { title: '发起实习申请'
         }
       },
       {
@@ -226,6 +226,63 @@ export const asyncRouterMap = [
       }
     ]
   },
+  {
+    path: '/companyPortInternshipList',
+    component: Layout,
+    redirect: '/journal/list',
+    name: 'CompanyPort',
+    meta: { title: '查看周记' },
+    children: [
+      {
+        path: 'list',
+        name: 'JournalList',
+        component: () => import('@/views/comPort/internshipList'),
+        meta: { title: '实习记录' }
+      },
+      {
+        path: 'todo',
+        name: 'todoList',
+        component: () => import('@/views/comPort/todo'),
+        hidden: true
+      },
+      {
+        path: 'jouList/:stuId',
+        name: 'JournaStudentList',
+        component: () => import('@/views/comPort/journalList'),
+        hidden: true
+      }
+    ]
+  },
+  {
+    path: '/companyPortInternshipListed',
+    component: Layout,
+    redirect: '',
+    name: 'CompanyPort',
+    meta: { },
+    children: [
+      {
+        path: 'list',
+        name: 'JournalList',
+        component: () => import('@/views/comPort/internshipListed'),
+        meta: { title: '已完成的实习记录' }
+      }
+    ]
+  },
+  {
+    path: '/companyPortInternshipListIng',
+    component: Layout,
+    redirect: '',
+    name: 'CompanyPort',
+    meta: { },
+    children: [
+      {
+        path: 'list',
+        name: 'JournalList',
+        component: () => import('@/views/comPort/internshipListIng'),
+        meta: { title: '实习中的实习记录' }
+      }
+    ]
+  },
   // {
   //   path: '/myinternship',
   //   component: Layout,
@@ -242,7 +299,7 @@ export const asyncRouterMap = [
   //   ]
   // },
 
-  { path: '*', redirect: '/404', name: 'NotMatch', hidden: true }
+  { path: '*', redirect: '/dashboard', name: 'NotMatch', hidden: true }
 ]
 
 console.log('token:', getToken())

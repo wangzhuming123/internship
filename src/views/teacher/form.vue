@@ -49,7 +49,6 @@ export default {
   },
   methods: {
     saveOrUpdate() {
-      console.log(this.teacher)
       this.saveBtnDisabled = true
       if (this.teacher.teaId) {
         this.updateData()

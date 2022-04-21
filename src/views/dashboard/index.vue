@@ -8,11 +8,10 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import StudentPort from '@/views/studentport'
 export default {
   name: 'Dashboard',
   components: {
-    StudentPort
+
   },
   computed: {
     ...mapGetters([

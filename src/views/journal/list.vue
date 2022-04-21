@@ -20,11 +20,16 @@
           {{ (page - 1) * limit + scope.$index + 1 }}
         </template>
       </el-table-column>
-      <el-table-column prop="jourContent" label="周记内容" width="180"/>
+      <el-table-column prop="jourTitle" label="标题" width="180"/>
+      <el-table-column label ="创建时间" width = "120px" align = "center" >
+        <template slot-scope="scope">
+          {{ scope.row.gmtCreate.substr(0,10) }}
+        </template>
+      </el-table-column>
       <el-table-column label="操作" width="200">
         <template slot-scope="scope">
           <router-link :to="'/journal/edit/'+scope.row.jourId">
-            <el-button type="primary" size="mini" icon="el-icon-edit">修改</el-button>
+            <el-button type="primary" size="mini" icon="el-icon-edit">查看详情</el-button>
           </router-link>
           <el-button
             size="mini"
@@ -70,10 +75,12 @@ export default {
     // 调用api模块，加载当前学生的周记
     fetchData() {
       const stuId = sessionStorage.getItem('stuId')
-      journalApi.getById(stuId).then(response => {
-        this.list = response.data.rows
-        this.total = response.data.total
-      })
+      if (stuId) {
+        journalApi.getById(stuId).then(response => {
+          this.list = response.data.rows
+          this.total = response.data.total
+        })
+      }
       // journalApi.list().then(response => {
       //   this.list = response.data.items
       //   this.total = this.list.length

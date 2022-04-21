@@ -7,6 +7,12 @@ export default{
       method: 'get'
     })
   },
+  nameList() {
+    return request({
+      url: '/admin/manage/company/nameList',
+      method: 'get'
+    })
+  },
 
   pageList(page, limit, searchObj) {
     return request({

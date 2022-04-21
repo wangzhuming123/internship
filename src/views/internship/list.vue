@@ -31,6 +31,9 @@
         <el-button type="primary" icon="el-icon-search" @click="fetchData()">查询</el-button>
         <el-button type="default" @click="resetData()">清空</el-button>
       </el-form-item>
+      <el-badge :value="12" class="item">
+        <el-button size="small">评论</el-button>
+      </el-badge>
     </el-form>
     <!-- 多选删除 -->
     <div style="margin-bottom: 10px">
@@ -56,8 +59,9 @@
       <el-table-column prop="interPosition" label="职位" width="120"/>
       <el-table-column prop="interState" width = "120px" label="状态">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.interState == 0" type="success">已完成</el-tag>
+          <el-tag v-if="scope.row.interState == 2" type="success">已完成</el-tag>
           <el-tag v-if="scope.row.interState == 1">实习中</el-tag>
+          <el-tag v-if="scope.row.interState == 0" type="warning">申请中</el-tag>
         </template>
       </el-table-column>
       <el-table-column label ="开始时间" width = "120px" align = "center" >
@@ -90,13 +94,13 @@
       </el-table-column>
       <el-table-column label="操作" width="200px">
         <template slot-scope="scope">
-          <router-link :to="'/teacher/edit/'+scope.row.id">
+          <router-link :to="'/internship/edit/'+scope.row.interId">
             <el-button type="primary" size="mini" icon="el-icon-edit">修改</el-button>
           </router-link>
           <el-button
             size="mini"
             type="danger"
-            @click="removeById(scope.row.id)">删除</el-button>
+            @click="removeById(scope.row.interId)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -133,22 +137,37 @@ export default {
     // 调用api模块，加载实习记录列表
     fetchData() {
       const stuId = sessionStorage.getItem('stuId')
+      const comId = sessionStorage.getItem('comId')
+      const teaId = sessionStorage.getItem('teaId')
+      const parId = sessionStorage.getItem('parId')
       if (stuId) {
         internshipApi.getByStuId(stuId).then(response => {
           this.list = response.data.rows
-          this.list.forEach((element, index) => {
-            this.list[index].interEndTime = element.interEndTime.slice(0, 10)
-          // this.list[index].interStartTime = element.interStartTime.slice(0, 10)
-          })
+
+          this.total = response.data.total
+        })
+      } else if (comId) {
+        internshipApi.getByComId(comId).then(response => {
+          this.list = response.data.rows
+
+          this.total = response.data.total
+        })
+      } else if (teaId) {
+        internshipApi.getByTeaId(comId).then(response => {
+          this.list = response.data.rows
+
+          this.total = response.data.total
+        })
+      } else if (parId) {
+        internshipApi.getByParId(comId).then(response => {
+          this.list = response.data.rows
+
           this.total = response.data.total
         })
       } else {
         internshipApi.pageList(this.page, this.limit, this.searchObj).then(response => {
           this.list = response.data.rows
-          this.list.forEach((element, index) => {
-            this.list[index].interEndTime = element.interEndTime.slice(0, 10)
-          // this.list[index].interStartTime = element.interStartTime.slice(0, 10)
-          })
+
           this.total = response.data.total
         })
       }
@@ -196,12 +215,9 @@ export default {
     },
     // 当多选选项发生变化的时候调用
     handleSelectionChange(selection) {
-      console.log(selection)
       this.multipleSelection = selection
     },
     batchRemove() {
-      console.log('removeRows......')
-
       if (this.multipleSelection.length === 0) {
         this.$message.warning('请选择要删除的记录！')
         return
@@ -238,4 +254,10 @@ export default {
 
 }
 </script>
-
+<style scoped>
+.item {
+  /* margin-top: 6px;
+  margin-left: 300px; */
+  float:right;
+}
+</style>

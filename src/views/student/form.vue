@@ -71,7 +71,6 @@ export default {
       })
     },
     saveOrUpdate() {
-      console.log(this.student)
       this.saveBtnDisabled = true
       if (this.student.id) {
         this.updateData()

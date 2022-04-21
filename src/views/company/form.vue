@@ -44,7 +44,6 @@ export default {
   },
   methods: {
     saveOrUpdate() {
-      console.log(this.company)
       this.saveBtnDisabled = true
       if (this.company.comId) {
         this.updateData()

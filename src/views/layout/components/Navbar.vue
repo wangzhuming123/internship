@@ -1,7 +1,9 @@
 <template>
   <el-menu class="navbar" mode="horizontal">
+
     <hamburger :toggle-click="toggleSideBar" :is-active="sidebar.opened" class="hamburger-container"/>
     <breadcrumb />
+    <div class="right-menu">test</div>
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
         <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
@@ -10,11 +12,11 @@
       <el-dropdown-menu slot="dropdown" class="user-dropdown">
         <router-link class="inlineBlock" to="/">
           <el-dropdown-item>
-            Home
+            主页
           </el-dropdown-item>
         </router-link>
         <el-dropdown-item divided>
-          <span style="display:block;" @click="logout">LogOut</span>
+          <span style="display:block;" @click="logout">退出</span>
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
@@ -31,11 +33,22 @@ export default {
     Breadcrumb,
     Hamburger
   },
+  data() {
+    return {
+      name: ''
+
+    }
+  },
   computed: {
     ...mapGetters([
       'sidebar',
       'avatar'
     ])
+  },
+  created() {
+    if (sessionStorage.getItem('obj')) {
+      this.name = sessionStorage.getItem('stuId')
+    }
   },
   methods: {
     toggleSideBar() {
@@ -51,6 +64,7 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
+
 .navbar {
   height: 50px;
   line-height: 50px;
@@ -66,6 +80,11 @@ export default {
     right: 90px;
     top: 16px;
     color: red;
+  }
+  .right-menu {
+    position: absolute;
+    right: 100px;
+    top: 0;
   }
   .avatar-container {
     height: 50px;

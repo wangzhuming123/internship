@@ -17,14 +17,14 @@ export default{
   },
   batchRemove(idList) {
     return request({
-      url: '/admin/manage/journal/batch-remove',
+      url: '/manage/journal/batch-remove',
       method: 'delete',
       data: idList
     })
   },
   removeById(id) {
     return request({
-      url: `/admin/manage/journal/remove/${id}`,
+      url: `/manage/journal/remove/${id}`,
       method: 'delete'
 
     })
@@ -49,6 +49,13 @@ export default{
   getByJouId(id) {
     return request({
       url: `manage/journal/get/${id}`,
+      method: 'get'
+    })
+  },
+  // 根据学生id和公司id查询周记
+  comGetJouByStuId(stuId, comId) {
+    return request({
+      url: `manage/journal/get/${stuId}/${comId}`,
       method: 'get'
     })
   },

@@ -45,6 +45,70 @@ export default{
 
     })
   },
+  // 根据公司id查询学生实习记录
+  getByComId(id) {
+    return request({
+      url: `/admin/manage/internship/getByCom/${id}`,
+      method: 'get'
+
+    })
+  },
+  // 根据公司id查询已完成的实习记录
+  getEdByComId(id) {
+    return request({
+      url: `/admin/manage/internship/getEdByCom/${id}`,
+      method: 'get'
+
+    })
+  },
+  // 根据公司id查询已完成的实习记录
+  getIngByComId(id) {
+    return request({
+      url: `/admin/manage/internship/getIngByCom/${id}`,
+      method: 'get'
+
+    })
+  },
+  // 根据公司id查询未处理的消息
+  getToDoByComId(id) {
+    return request({
+      url: `/admin/manage/internship/getToDoByCom/${id}`,
+      method: 'get'
+    })
+  },
+
+  // 公司同意实习申请
+  comAgree(id) {
+    return request({
+      url: `/company/manage/agree/${id}`,
+      method: 'get'
+    })
+  },
+  // 根据学生id查询实习记录
+  getByParId(id) {
+    return request({
+      url: `/admin/manage/internship/getByPar/${id}`,
+      method: 'put'
+
+    })
+  },
+  // 公司完成实习
+  complete(id) {
+    return request({
+      url: `/company/manage/complete/${id}`,
+      method: 'get'
+    })
+  },
+
+  // 根据实习记录id查询实习记录
+  getById(id) {
+    return request({
+      url: `/admin/manage/internship/getById/${id}`,
+      method: 'get'
+    })
+  },
+
+  // 根据实习记录id更新实习记录
   updateById(myinternship) {
     return request({
       url: `/admin/manage/internship/update`,
