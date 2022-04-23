@@ -72,7 +72,7 @@ export default {
     },
     saveOrUpdate() {
       this.saveBtnDisabled = true
-      if (this.student.id) {
+      if (this.student.stuId) {
         this.updateData()
       } else { this.saveData() }
     },

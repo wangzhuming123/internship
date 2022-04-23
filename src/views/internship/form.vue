@@ -59,7 +59,6 @@ export default {
       })
     },
     saveOrUpdate() {
-      console.log(this.internship)
       this.saveBtnDisabled = true
       if (this.internship.id) {
         this.updateData()
@@ -72,7 +71,7 @@ export default {
           message: response.message,
           type: 'success'
         })
-        this.$router.push({ path: '/internship/list' })
+        this.$router.push({ path: '/stuinternship/list' })
       })
     },
     // 数据更新

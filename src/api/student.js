@@ -22,6 +22,13 @@ export default{
       params: searchObj
     })
   },
+  pageListByTea(page, limit, teaId, searchObj) {
+    return request({
+      url: `/teacher/manage/listByTeaId/${page}/${limit}/${teaId}`,
+      method: 'get',
+      params: searchObj
+    })
+  },
   batchRemove(idList) {
     return request({
       url: '/admin/manage/student/batch-remove',

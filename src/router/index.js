@@ -27,7 +27,7 @@ export const constantRouterMap = [
   { path: '/login', component: () => import('@/views/login/index'), hidden: true },
   { path: '/404', component: () => import('@/views/404'), hidden: true },
   { path: '/stuPort', component: () => import('@/views/stuPort'), hidden: true },
-  { path: '/parPort', component: () => import('@/views/parPort'), hidden: true },
+  // { path: '/parPort', component: () => import('@/views/parPort'), hidden: true },
   {
     path: '/',
     component: Layout,
@@ -181,17 +181,73 @@ export const asyncRouterMap = [
         meta: { title: '实习记录列表' }
       },
       {
-        path: 'create',
-        name: 'InternshipCreate',
-        component: () => import('@/views/internship/form'),
-        meta: { title: '发起实习申请'
-        }
+        path: 'todo',
+        name: 'todoList',
+        component: () => import('@/views/internship/todo'),
+        hidden: true
       },
       {
         path: 'edit/:id',
         name: 'InternshipEdit',
         component: () => import('@/views/internship/form'),
         meta: { title: '编辑实习记录' },
+        hidden: true
+      }
+    ]
+  },
+  // 学生端实习记录
+  {
+    path: '/stuinternship',
+    component: Layout,
+    redirect: '/stuinternship/list',
+    name: 'stuInternship',
+    meta: { title: '实习记录管理' },
+    children: [
+      {
+        path: 'list',
+        name: 'stuInternshipList',
+        component: () => import('@/views/internship/list'),
+        meta: { title: '实习记录列表' }
+      },
+      {
+        path: 'create',
+        name: 'stuInternshipCreate',
+        component: () => import('@/views/internship/form'),
+        meta: { title: '发起实习申请' }
+      },
+      {
+        path: 'edit/:id',
+        name: 'stuInternshipEdit',
+        component: () => import('@/views/internship/form'),
+        meta: { title: '编辑实习记录' },
+        hidden: true
+      }
+    ]
+  },
+  // 辅导员端实习记录
+  {
+    path: '/teaInternship',
+    component: Layout,
+    redirect: '/teaInternship/listed',
+    name: 'teaInternship',
+    meta: { title: '实习统计' },
+    children: [
+      {
+        path: 'listed',
+        name: 'teaInternshipList',
+        component: () => import('@/views/teaPort/listed'),
+        meta: { title: '已完成的实习' }
+      },
+      {
+        path: 'listing',
+        name: 'teaInternshipCreate',
+        component: () => import('@/views/teaPort/listing'),
+        meta: { title: '进行中的实习' }
+      },
+      {
+        path: 'jouList/:stuId',
+        name: 'JournaStudentList',
+        component: () => import('@/views/teaPort/journalList'),
         hidden: true
       }
     ]
@@ -226,12 +282,13 @@ export const asyncRouterMap = [
       }
     ]
   },
+  // 公司端实习记录
   {
     path: '/companyPortInternshipList',
     component: Layout,
-    redirect: '/journal/list',
+    redirect: '',
     name: 'CompanyPort',
-    meta: { title: '查看周记' },
+    meta: { title: '查看实习记录' },
     children: [
       {
         path: 'list',
@@ -253,6 +310,7 @@ export const asyncRouterMap = [
       }
     ]
   },
+  // 公司端已完成的实习
   {
     path: '/companyPortInternshipListed',
     component: Layout,
@@ -262,12 +320,13 @@ export const asyncRouterMap = [
     children: [
       {
         path: 'list',
-        name: 'JournalList',
+        name: 'InternshipListed',
         component: () => import('@/views/comPort/internshipListed'),
         meta: { title: '已完成的实习记录' }
       }
     ]
   },
+  // 公司端进行中的实习
   {
     path: '/companyPortInternshipListIng',
     component: Layout,
@@ -277,9 +336,37 @@ export const asyncRouterMap = [
     children: [
       {
         path: 'list',
-        name: 'JournalList',
+        name: 'InternshipListing',
         component: () => import('@/views/comPort/internshipListIng'),
         meta: { title: '实习中的实习记录' }
+      }
+    ]
+  },
+  // 家长端实习记录
+  {
+    path: '/parentPortInternshipList',
+    component: Layout,
+    redirect: '',
+    name: 'ParentPort',
+    meta: { title: '查看实习记录' },
+    children: [
+      {
+        path: 'list',
+        name: 'internshipList',
+        component: () => import('@/views/parPort/internshipList'),
+        meta: { title: '实习记录' }
+      },
+      {
+        path: 'todo',
+        name: 'todoList',
+        component: () => import('@/views/parPort/todo'),
+        hidden: true
+      },
+      {
+        path: 'jouList/:stuId',
+        name: 'JournaStudentList',
+        component: () => import('@/views/parPort/journalList'),
+        hidden: true
       }
     ]
   },

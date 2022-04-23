@@ -61,6 +61,22 @@ export default{
 
     })
   },
+  // 根据辅导员id查询已完成的实习记录
+  getEdByTeaId(id) {
+    return request({
+      url: `/admin/manage/internship/getEdByTea/${id}`,
+      method: 'get'
+
+    })
+  },
+  // 根据辅导员id查询实习中的实习记录
+  getIngByTeaId(id) {
+    return request({
+      url: `/admin/manage/internship/getIngByTea/${id}`,
+      method: 'get'
+
+    })
+  },
   // 根据公司id查询已完成的实习记录
   getIngByComId(id) {
     return request({
@@ -77,10 +93,41 @@ export default{
     })
   },
 
+  // 根据辅导员id查询未处理的消息
+  getToDoByTeaId(id) {
+    return request({
+      url: `/admin/manage/internship/getToDoByTea/${id}`,
+      method: 'get'
+    })
+  },
+
+  getByTeaId(page, limit, teaId, searchObj) {
+    return request({
+      url: `/teacher/manage/interByTeaId/${page}/${limit}/${teaId}`,
+      method: 'get',
+      data: 'searchObj'
+    })
+  },
+
   // 公司同意实习申请
   comAgree(id) {
     return request({
       url: `/company/manage/agree/${id}`,
+      method: 'get'
+    })
+  },
+
+  // 家长同意实习申请
+  parAgree(id) {
+    return request({
+      url: `/parent/manage/agree/${id}`,
+      method: 'get'
+    })
+  },
+  // 公司同意实习申请
+  teaAgree(id) {
+    return request({
+      url: `/teacher/manage/agree/${id}`,
       method: 'get'
     })
   },
@@ -99,7 +146,13 @@ export default{
       method: 'get'
     })
   },
-
+  // 根据家长id查询需要处理的记录
+  getToDoByParId(parId) {
+    return request({
+      url: `/parent/manage/internship/getToDoByPar/${parId}`,
+      method: 'get'
+    })
+  },
   // 根据实习记录id查询实习记录
   getById(id) {
     return request({

@@ -1,36 +1,10 @@
 <template>
-  <div class="app-container">
-
-    <!--查询表单-->
-    <el-form :inline="true">
-      <el-form-item>
-        <!-- <el-input v-model="searchObj.name" placeholder="学生"/> -->
-        <el-autocomplete
-          v-model="searchObj.stuName"
-          :fetch-suggestions="querySearch"
-          :trigger-on-focus="false"
-          class="inline-input"
-          placeholder="学生名称"
-          value-key="stu_name" />
-      </el-form-item>
-
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" @click="fetchData()">查询</el-button>
-        <el-button type="default" @click="resetData()">清空</el-button>
-      </el-form-item>
-    </el-form>
-    <!-- 多选删除 -->
-    <div style="margin-bottom: 10px">
-      <el-button type="danger" size="mini" @click="batchRemove()">批量删除</el-button>
-    </div>
-
+  <div journal="app-container">
     <el-table
       :data="list"
       border
       stripe
-      style="width: 100%"
-      @selection-change="handleSelectionChange">
-      <el-table-column type="selection"/>
+      style="width: 100%">
       <el-table-column
         label="#"
         width="50">
@@ -38,37 +12,25 @@
           {{ (page - 1) * limit + scope.$index + 1 }}
         </template>
       </el-table-column>
-      <el-table-column prop="stuName" label="姓名" width="180"/>
-      <el-table-column prop="stuGender" label="性别">
+      <el-table-column prop="jourTitle" label="标题" width="180"/>
+      <el-table-column label ="创建时间" width = "120px" align = "center" >
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.stuGender == 1" type="success">男</el-tag>
-          <el-tag v-if="scope.row.stuGender == 0">女</el-tag>
+          {{ scope.row.gmtCreate.substr(0,10) }}
         </template>
       </el-table-column>
-      <el-table-column prop="stuNumber" label="学号" />
-      <el-table-column prop="className" label="班级" />
-      <el-table-column prop="stuEmail" label="邮箱" />
-      <el-table-column prop="stuState" label="状态">
+      <el-table-column label="详情">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.stuState == 1" type="success">实习中</el-tag>
-          <el-tag v-if="scope.row.stuState == 0">在校</el-tag>
-
+          <el-button type="text" @click="openDialog(scope.row.jourContent)">查看详细内容</el-button>
         </template>
-      </el-table-column>
-      <el-table-column label="操作" width="200">
-        <template slot-scope="scope">
-          <router-link :to="'/student/edit/'+scope.row.stuId">
-            <el-button type="primary" size="mini" icon="el-icon-edit">修改</el-button>
-          </router-link>
-          <el-button
-            size="mini"
-            type="danger"
-            @click="removeById(scope.row.stuId)">删除</el-button>
-        </template>
-
       </el-table-column>
     </el-table>
-
+    <el-dialog
+      :visible.sync="dialogVisible"
+      :close="handleClose"
+      title=""
+      width="30%">
+      <span>{{ dialogContent }}</span>
+    </el-dialog>
     <el-pagination
       :current-page="page"
       :total="total"
@@ -83,16 +45,18 @@
 </template>
 
 <script>
-import studentApi from '@/api/student'
+import journalApi from '@/api/journal'
 export default {
+//   name: 'JournalList',
   data() {
     return {
-      list: [], // 学生列表
+      list: [], // 班级列表
       total: 0, // 总记录数
       page: 1, // 页码数
       limit: 5, // 每页记录数
       searchObj: {}, // 查询表单
-      multipleSelection: []// 批量删除选中的记录列表
+      dialogVisible: false,
+      dialogContent: ''
     }
   },
   created() {
@@ -100,21 +64,31 @@ export default {
   },
 
   methods: {
-    // 调用api模块，加载学生列表
-
+    // 调用api模块，加载当前学生的周记
     fetchData() {
-      const teaId = sessionStorage.getItem('teaId')
-      if (teaId) {
-        studentApi.pageListByTea(this.page, this.limit, teaId, this.searchObj).then(response => {
-          this.list = response.data.rows
-          this.total = response.data.total
-        })
-      } else {
-        studentApi.pageList(this.page, this.limit, this.searchObj).then(response => {
-          this.list = response.data.rows
-          this.total = response.data.total
-        })
-      }
+    //   console.log(this.$route.params.stuId)
+    //   const comId = sessionStorage.getItem('comId')
+      journalApi.getById(this.$route.params.stuId).then(response => {
+        this.list = response.data.rows
+        this.total = response.data.total
+      })
+    //   journalApi.comGetJouByStuId(this.$route.params.stuId, comId).then(response => {
+    //     this.list = response.data.rows
+    //     this.total = response.data.total
+    //   })
+      // journalApi.list().then(response => {
+      //   this.list = response.data.items
+      //   this.total = this.list.length
+      // })
+    },
+    openDialog(data) {
+      this.dialogVisible = true
+      this.dialogContent = data
+    },
+
+    handleClose() {
+      this.dialogVisible = false
+      this.dialogContent = ''
     },
     // 跳转页数
     changeCurrentPage(page) {
@@ -138,7 +112,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        studentApi.removeById(id).then(response => {
+        journalApi.removeById(id).then(response => {
           this.$message({
             message: response.message,
             type: 'success'
@@ -176,10 +150,10 @@ export default {
         // 遍历selection，将id取出放入id列表
         var idList = []
         this.multipleSelection.forEach(item => {
-          idList.push(item.id)
+          idList.push(item.teaId)
         })
         // 调用api
-        return studentApi.batchRemove(idList)
+        return journalApi.batchRemove(idList)
       }).then((response) => {
         this.fetchData()
         this.$message.success(response.message)
@@ -190,7 +164,7 @@ export default {
       })
     },
     querySearch(queryString, cb) {
-      studentApi.selectNameListByKey(queryString).then(response => {
+      journalApi.selectNameListByKey(queryString).then(response => {
         cb(response.data.nameList)
       })
     }

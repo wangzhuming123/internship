@@ -31,9 +31,11 @@
         <el-button type="primary" icon="el-icon-search" @click="fetchData()">查询</el-button>
         <el-button type="default" @click="resetData()">清空</el-button>
       </el-form-item>
-      <el-badge :value="12" class="item">
-        <el-button size="small">评论</el-button>
-      </el-badge>
+      <router-link :to="'/internship/todo/'">
+        <el-badge :value="message" class="item">
+          <el-button size="small" type="dangar">待办事项</el-button>
+        </el-badge>
+      </router-link>
     </el-form>
     <!-- 多选删除 -->
     <div style="margin-bottom: 10px">
@@ -126,7 +128,7 @@ export default {
       page: 1, // 页码数
       limit: 5, // 每页记录数
       searchObj: {}, // 查询表单
-      multipleSelection: []// 批量删除选中的记录列表
+      message: ''
     }
   },
   created() {
@@ -153,13 +155,16 @@ export default {
           this.total = response.data.total
         })
       } else if (teaId) {
-        internshipApi.getByTeaId(comId).then(response => {
+        internshipApi.getByTeaId(this.page, this.limit, teaId, this.searchObj).then(response => {
           this.list = response.data.rows
-
           this.total = response.data.total
         })
+
+        internshipApi.getToDoByTeaId(teaId).then(response => {
+          this.message = response.data.total
+        })
       } else if (parId) {
-        internshipApi.getByParId(comId).then(response => {
+        internshipApi.getByParId(parId).then(response => {
           this.list = response.data.rows
 
           this.total = response.data.total
