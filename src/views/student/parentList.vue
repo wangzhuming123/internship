@@ -18,10 +18,6 @@
         <el-button type="default" @click="resetData()">清空</el-button>
       </el-form-item>
     </el-form>
-    <!-- 多选删除 -->
-    <div style="margin-bottom: 10px">
-      <el-button type="danger" size="mini" @click="batchRemove()">批量删除</el-button>
-    </div>
 
     <el-table
       :data="list"
@@ -29,7 +25,6 @@
       stripe
       style="width: 100%"
       @selection-change="handleSelectionChange">
-      <el-table-column type="selection"/>
       <el-table-column
         label="#"
         width="50">
@@ -43,7 +38,7 @@
       <el-table-column prop="parEmail" label="邮箱" width="180"/>
       <el-table-column label="操作" width="200">
         <template slot-scope="scope">
-          <router-link :to="'/student/edit/'+scope.row.stuId">
+          <router-link :to="'/student/editPar/'+scope.row.parId">
             <el-button type="primary" size="mini" icon="el-icon-edit">修改</el-button>
           </router-link>
           <el-button
@@ -88,10 +83,18 @@ export default {
   methods: {
     // 调用api模块，加载学生列表
     fetchData() {
-      studentApi.parPageList(this.page, this.limit, this.searchObj).then(response => {
-        this.list = response.data.rows
-        this.total = response.data.total
-      })
+      const teaId = sessionStorage.getItem('teaId')
+      if (teaId) {
+        studentApi.parPageListByTea(this.page, this.limit, teaId, this.searchObj).then(response => {
+          this.list = response.data.rows
+          this.total = response.data.total
+        })
+      } else {
+        studentApi.parPageList(this.page, this.limit, this.searchObj).then(response => {
+          this.list = response.data.rows
+          this.total = response.data.total
+        })
+      }
     },
     // 跳转页数
     changeCurrentPage(page) {

@@ -15,6 +15,23 @@ export default{
     })
   },
 
+  updateParById(parent) {
+    return request({
+      url: `/admin/manage/parent/update`,
+      method: 'put',
+      data: parent
+
+    })
+  },
+
+  getParById(id) {
+    return request({
+      url: `/admin/manage/parent/get/${id}`,
+      method: 'get'
+
+    })
+  },
+
   pageList(page, limit, searchObj) {
     return request({
       url: `/admin/manage/student/list/${page}/${limit}`,
@@ -29,6 +46,14 @@ export default{
       params: searchObj
     })
   },
+  parPageListByTea(page, limit, teaId, searchObj) {
+    return request({
+      url: `/teacher/manage/parListByTeaId/${page}/${limit}/${teaId}`,
+      method: 'get',
+      params: searchObj
+    })
+  },
+
   batchRemove(idList) {
     return request({
       url: '/admin/manage/student/batch-remove',

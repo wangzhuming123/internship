@@ -11,7 +11,7 @@
           :trigger-on-focus="false"
           class="inline-input"
           placeholder="公司名称"
-          value-key="company_name" />
+          value-key="com_name" />
       </el-form-item>
 
       <el-form-item>

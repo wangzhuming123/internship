@@ -62,18 +62,19 @@ export default{
     })
   },
   // 根据辅导员id查询已完成的实习记录
-  getEdByTeaId(id) {
+  getEdByTeaId(id, searchObj) {
     return request({
       url: `/admin/manage/internship/getEdByTea/${id}`,
-      method: 'get'
-
+      method: 'get',
+      params: searchObj
     })
   },
   // 根据辅导员id查询实习中的实习记录
-  getIngByTeaId(id) {
+  getIngByTeaId(id, searchObj) {
     return request({
       url: `/admin/manage/internship/getIngByTea/${id}`,
-      method: 'get'
+      method: 'get',
+      params: searchObj
 
     })
   },

@@ -59,6 +59,14 @@ export default{
       method: 'get'
 
     })
+  },
+
+  // 根据辅导员id查询班级列表
+  getClassByTeaId(id) {
+    return request({
+      url: `/admin/manage/class/listByTeaId/${id}`,
+      method: 'get'
+    })
   }
 
 }

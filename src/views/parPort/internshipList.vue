@@ -3,32 +3,7 @@
 
     <!--查询表单-->
     <el-form :inline="true">
-      <el-form-item>
-        <el-autocomplete
-          v-model="searchObj.name"
-          :trigger-on-focus="false"
-          class="inline-input"
-          placeholder="学生名称"
-          value-key="name" />
-      </el-form-item>
 
-      <el-form-item label="实习时间">
-        <el-date-picker
-          v-model="searchObj.joinDateBegin"
-          placeholder="开始时间"
-          value-format="yyyy-MM-dd" />
-      </el-form-item>
-      <el-form-item label="-">
-        <el-date-picker
-          v-model="searchObj.joinDateEnd"
-          placeholder="结束时间"
-          value-format="yyyy-MM-dd" />
-      </el-form-item>
-
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" @click="fetchData()">查询</el-button>
-        <el-button type="default" @click="resetData()">清空</el-button>
-      </el-form-item>
       <router-link :to="'/parentPortInternshipList/todo/'">
         <el-badge :value="message" class="item">
           <el-button size="small">消息</el-button>
@@ -49,6 +24,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="stuName" label="学生姓名" width="120"/>
+      <el-table-column prop="comName" label="实习公司" width="120"/>
       <el-table-column prop="interPosition" label="职位" width="120"/>
       <el-table-column label ="开始时间" width = "120px" align = "center" >
         <template slot-scope="scope">
@@ -127,6 +103,9 @@ export default {
       })
       internshipApi.getToDoByParId(parId).then(response => {
         this.message = response.data.total
+        if (this.message === 0) {
+          this.message = ''
+        }
       })
     },
     openDialog(data) {

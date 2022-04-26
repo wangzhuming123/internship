@@ -13,20 +13,6 @@
           placeholder="学生名称"
           value-key="name" />
       </el-form-item>
-
-      <el-form-item label="实习时间">
-        <el-date-picker
-          v-model="searchObj.joinDateBegin"
-          placeholder="开始时间"
-          value-format="yyyy-MM-dd" />
-      </el-form-item>
-      <el-form-item label="-">
-        <el-date-picker
-          v-model="searchObj.joinDateEnd"
-          placeholder="结束时间"
-          value-format="yyyy-MM-dd" />
-      </el-form-item>
-
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" @click="fetchData()">查询</el-button>
         <el-button type="default" @click="resetData()">清空</el-button>
@@ -162,6 +148,9 @@ export default {
 
         internshipApi.getToDoByTeaId(teaId).then(response => {
           this.message = response.data.total
+          if (this.message === 0) {
+            this.message = ''
+          }
         })
       } else if (parId) {
         internshipApi.getByParId(parId).then(response => {

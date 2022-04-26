@@ -110,6 +110,9 @@ export default {
       })
       internshipApi.getToDoByComId(comId).then(response => {
         this.message = response.data.total
+        if (this.message === 0) {
+          this.message = ''
+        }
       })
     },
     // 跳转页数

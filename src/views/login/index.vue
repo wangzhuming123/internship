@@ -1,14 +1,14 @@
 <template>
   <div class="login-container">
+    <h3 class="title">西邮实习生管理系统</h3>
     <el-form
+      v-show="!isRe"
       ref="loginForm"
       :model="loginForm"
       :rules="loginRules"
       class="login-form"
       auto-complete="on"
-      label-position="left"
-    >
-      <h3 class="title">西邮实习生管理系统</h3>
+      label-position="left">
       <el-form-item prop="username">
         <span class="svg-container">
           <svg-icon icon-class="user" />
@@ -41,38 +41,31 @@
         </span>
       </el-form-item>
       <el-form-item
-        label="用户类型"
         prop="type"
         align="right"
-      >
+        style="display:flex;justify-content:center;">
         <el-select
           v-model="loginForm.type"
           name="type"
-          placeholder="请选用户类型"
-        >
+          placeholder="请选用户类型">
           <el-option
             label="管理员"
-            value="0"
-          />
+            value="0"/>
           <el-option
             label="辅导员"
-            value="1"
-          />
+            value="1" />
           <el-option
             label="学生"
-            value="2"
-          />
+            value="2"/>
           <el-option
             label="家长"
-            value="3"
-          />
+            value="3"/>
           <el-option
             label="企业"
-            value="4"
-          />
+            value="4"/>
         </el-select>
       </el-form-item>
-      <el-form-item>
+      <div class="button-box">
         <el-button
           :loading="loading"
           type="primary"
@@ -81,22 +74,60 @@
         >
           登录
         </el-button>
-      </el-form-item>
-      <el-form-item>
         <el-button
           :loading="loading"
           type="primary"
           style="width:100%;"
-          @click.native.prevent="handleLogin"
+          @click.native.prevent="isRe = true"
         >
           注册
         </el-button>
-      </el-form-item>
-      <div class="tips">
-        <span style="margin-right:20px;">username: admin</span>
-        <span> password: admin</span>
       </div>
     </el-form>
+    <div class="register-box">
+      <el-form v-show="isRe" label-width="80px">
+        <el-form-item label="学生姓名">
+          <el-input v-model="registerForm.name" />
+        </el-form-item>
+
+        <el-form-item label="学生学号">
+          <el-input v-model="registerForm.username" />
+        </el-form-item>
+        <el-form-item label="登陆密码">
+          <el-input v-model="registerForm.password" />
+        </el-form-item>
+
+        <el-form-item label="电子邮箱">
+          <el-input v-model="registerForm.email" />
+        </el-form-item>
+        <el-form-item
+          prop="type"
+          align="right"
+          style="display:flex;justify-content:center;">
+          <el-select
+            v-model="loginForm.type"
+            name="type"
+            placeholder="请选用户类型">
+            <el-option
+              label="管理员"
+              value="0"/>
+            <el-option
+              label="辅导员"
+              value="1" />
+            <el-option
+              label="学生"
+              value="2"/>
+            <el-option
+              label="家长"
+              value="3"/>
+            <el-option
+              label="企业"
+              value="4"/>
+          </el-select>
+        </el-form-item>
+        <el-button type="primary" style="margin-left:158px; width: 200px;">保存</el-button>
+      </el-form>
+    </div>
     <!-- <left/> -->
   </div>
 </template>
@@ -104,11 +135,12 @@
 <script>
 import roleLisr from '@/utils/role'
 import { asyncRouterMap } from '../../router'
-import left from './left.vue'
+
+import register from '@/views/register'
 
 export default {
   name: 'Login',
-  components: { left },
+  components: { register },
   data() {
     const validatePass = (rule, value, callback) => {
       if (value.length < 5) {
@@ -118,6 +150,15 @@ export default {
       }
     }
     return {
+      isRe: false,
+      registerForm: {
+        username: '',
+        name: '',
+        password: '',
+        email: '',
+        phone: '',
+        sex: ''
+      },
       loginForm: {
         username: '',
         password: '',
@@ -219,14 +260,18 @@ $light_gray: #eee;
     border: 1px solid rgba(255, 255, 255, 0.1);
     background: rgba(0, 0, 0, 0.1);
     border-radius: 5px;
-    color: #454545;
+    color: #fdfdfd;
   }
+}
+.button-box{
+  display:flex;
+  flex-flow: row nowrap;
 }
 </style>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 $bg: #2d3a4b;
-$dark_gray: #889aa4;
+$dark_gray: #cecece;
 $light_gray: #eee;
 .login-container {
   position: fixed;
@@ -260,10 +305,11 @@ $light_gray: #eee;
     display: inline-block;
   }
   .title {
+    position: relative;
+    top: 80px;
     font-size: 26px;
     font-weight: 400;
     color: $light_gray;
-    margin: 0px auto 40px auto;
     text-align: center;
     font-weight: bold;
   }
@@ -276,5 +322,14 @@ $light_gray: #eee;
     cursor: pointer;
     user-select: none;
   }
+}
+.register-box{
+  position: relative;
+  top: 110px;
+  margin: 0 auto;
+  width: 400px;
+}
+/deep/.el-form-item__label{
+  color: rgb(224, 224, 224);
 }
 </style>

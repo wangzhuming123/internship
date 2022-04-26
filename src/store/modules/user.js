@@ -1,8 +1,5 @@
 import { login, logout, getInfo } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
-// import router, { constantRouterMap } from '@/router'
-
-// import roleobj from '@/utils/role'
 
 const user = {
   state: {

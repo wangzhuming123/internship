@@ -5,5 +5,4 @@ export default {
   'parent': ['/parentPortInternshipList'],
   'company': ['/companyPortInternshipList', '/companyPortInternshipListed',
     '/companyPortInternshipListIng']
-
 }

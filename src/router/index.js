@@ -26,18 +26,37 @@ import Layout from '../views/layout/Layout'
 export const constantRouterMap = [
   { path: '/login', component: () => import('@/views/login/index'), hidden: true },
   { path: '/404', component: () => import('@/views/404'), hidden: true },
-  { path: '/stuPort', component: () => import('@/views/stuPort'), hidden: true },
+  { path: '*', redirect: '/dashboard', name: 'NotMatch', hidden: true },
   // { path: '/parPort', component: () => import('@/views/parPort'), hidden: true },
+
   {
     path: '/',
     component: Layout,
     redirect: '/dashboard',
     name: 'Dashboard',
     hidden: true,
-    children: [{
-      path: 'dashboard',
-      component: () => import('@/views/dashboard/index')
-    }]
+    children: [
+      {
+        path: 'dashboard',
+        component: () => import('@/views/dashboard/index')
+      },
+      {
+        path: '/teaEdit/:id',
+        component: () => import('@/views/teacher/form'),
+        hidden: true },
+      {
+        path: '/stuEdit/:id',
+        component: () => import('@/views/student/form'),
+        hidden: true },
+      {
+        path: '/comEdit/:id',
+        component: () => import('@/views/company/form'),
+        hidden: true },
+      {
+        path: '/parEdit/:id',
+        component: () => import('@/views/parPort/form'),
+        hidden: true }
+    ]
 
   }]
 export const asyncRouterMap = [
@@ -47,7 +66,7 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/teacher/list',
     name: 'Teacher',
-    meta: { title: '辅导员管理', roles: ['0'] },
+    meta: { title: '辅导员管理' },
     children: [
       {
         path: 'list',
@@ -77,7 +96,7 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/student/list',
     name: 'Student',
-    meta: { title: '学生管理', roles: ['0', '1'] },
+    meta: { title: '学生管理' },
     children: [
       {
         path: 'list',
@@ -98,10 +117,17 @@ export const asyncRouterMap = [
         meta: { title: '学生家长列表' }
       },
       {
-        path: 'edit/:id',
+        path: 'editStu/:id',
         name: 'StudentEdit',
         component: () => import('@/views/student/form'),
         meta: { title: '编辑学生' },
+        hidden: true
+      },
+      {
+        path: 'editPar/:id',
+        name: 'ParentEdit',
+        component: () => import('@/views/parPort/form'),
+        meta: { title: '编辑学生家长' },
         hidden: true
       }
     ]
@@ -369,7 +395,7 @@ export const asyncRouterMap = [
         hidden: true
       }
     ]
-  },
+  }
   // {
   //   path: '/myinternship',
   //   component: Layout,
@@ -386,7 +412,6 @@ export const asyncRouterMap = [
   //   ]
   // },
 
-  { path: '*', redirect: '/dashboard', name: 'NotMatch', hidden: true }
 ]
 
 console.log('token:', getToken())
